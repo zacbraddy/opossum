@@ -44,6 +44,13 @@
 				</ul>
 			</li>
 			
+			<li class="dropdown">
+				<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="CircuitBreaker.html#event:close">CircuitBreaker#event:close</a></li><li><a href="CircuitBreaker.html#event:failure">CircuitBreaker#event:failure</a></li><li><a href="CircuitBreaker.html#event:fallback">CircuitBreaker#event:fallback</a></li><li><a href="CircuitBreaker.html#event:fire">CircuitBreaker#event:fire</a></li><li><a href="CircuitBreaker.html#event:halfOpen">CircuitBreaker#event:halfOpen</a></li><li><a href="CircuitBreaker.html#event:open">CircuitBreaker#event:open</a></li><li><a href="CircuitBreaker.html#event:reject">CircuitBreaker#event:reject</a></li><li><a href="CircuitBreaker.html#event:success">CircuitBreaker#event:success</a></li><li><a href="CircuitBreaker.html#event:timeout">CircuitBreaker#event:timeout</a></li>
+				</ul>
+			</li>
+			
 		</ul>
         
             <div class="col-sm-3 col-md-3">
@@ -316,23 +323,7 @@ the breaker to `halfOpen` state, and trying the action again.</td>
     
     <h5>Fires:</h5>
     <ul>
-        <li>event:'fire' When the action is executed</li>
-    
-        <li>event:'reject' When the breaker is open but fire() has been called</li>
-    
-        <li>event:'timeout' When the breaker action has timed out</li>
-    
-        <li>event:'success' when the breaker action completes successfully</li>
-    
-        <li>event:'failure' when the breaker action fails</li>
-    
-        <li>event:'open' when the breaker enters the 'open' state</li>
-    
-        <li>event:'close' when the breaker enters the 'closed' state</li>
-    
-        <li>event:'halfOpen' when the breaker enters the 'halfOpen' state</li>
-    
-        <li>event:'fallback' when a fallback function has executed</li>
+        <li><a href="CircuitBreaker.html#event:halfOpen">CircuitBreaker#event:halfOpen</a></li>
     </ul>
     
 
@@ -686,6 +677,11 @@ the breaker to `halfOpen` state, and trying the action again.</td>
     
 
     
+    <h5>Fires:</h5>
+    <ul>
+        <li><a href="CircuitBreaker.html#event:close">CircuitBreaker#event:close</a></li>
+    </ul>
+    
 
     
 
@@ -702,7 +698,7 @@ the breaker to `halfOpen` state, and trying the action again.</td>
             
 <hr>
 <dt>
-    <h4 class="name" id="fallback"><span class="type-signature"></span>fallback()</h4>
+    <h4 class="name" id="fallback"><span class="type-signature"></span>fallback(func)</h4>
     
     
 </dt>
@@ -722,83 +718,56 @@ a rejected Promise.
 
     
     
+        <h5>Parameters:</h5>
+        
 
-    
-<dl class="details">
-    
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
 
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
+        <th>Type</th>
 
         
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
             
-<hr>
-<dt>
-    <h4 class="name" id="fire"><span class="type-signature"></span>fire()</h4>
-    
-    
-</dt>
-<dd>
+                <td class="name"><code>func</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the fallback function to execute when the breaker
+has opened or when a timeout or error occurs.</td>
+        </tr>
 
     
-    <div class="description">
-        Execute the action for this circuit.
-    </div>
-    
+    </tbody>
+</table>
 
-    
-
-    
-
-    
     
 
     
@@ -856,9 +825,114 @@ a rejected Promise.
     
             
 <div class="param-desc">
-    a Promise that will be rejected if there is an error, the action
-times out, or the action fails. If the action succeeds, or if there is a
-fallback action that is executed, the Promise will resolve.
+    <a href="CircuitBreaker.html">CircuitBreaker</a> this
+</div>
+
+
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="fire"><span class="type-signature"></span>fire()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Execute the action for this circuit. If the action fails or times out, the
+returned promise will be rejected. If the action succeeds, the promise will
+resolve with the resolved value from action.
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+    <h5>Fires:</h5>
+    <ul>
+        <li><a href="CircuitBreaker.html#event:failure">CircuitBreaker#event:failure</a></li>
+    
+        <li><a href="CircuitBreaker.html#event:fallback">CircuitBreaker#event:fallback</a></li>
+    
+        <li><a href="CircuitBreaker.html#event:fire">CircuitBreaker#event:fire</a></li>
+    
+        <li><a href="CircuitBreaker.html#event:reject">CircuitBreaker#event:reject</a></li>
+    
+        <li><a href="CircuitBreaker.html#event:success">CircuitBreaker#event:success</a></li>
+    
+        <li><a href="CircuitBreaker.html#event:timeout">CircuitBreaker#event:timeout</a></li>
+    </ul>
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Promise a Promise that resolves on success and is rejected
+on failure of the action.
 </div>
 
 
@@ -937,6 +1011,11 @@ that has been provided.
     
 
     
+    <h5>Fires:</h5>
+    <ul>
+        <li><a href="CircuitBreaker.html#event:open">CircuitBreaker#event:open</a></li>
+    </ul>
+    
 
     
 
@@ -954,6 +1033,714 @@ that has been provided.
 
     
 
+    
+        <h3 class="subsection-title">Events</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id="event:close">close</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Emitted when the breaker is reset allowing the action to execute again
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="event:failure">failure</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Emitted when the breaker action fails
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="event:fallback">fallback</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Emitted when the breaker executes a fallback function
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="event:fire">fire</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Emitted when the breaker action is executed
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="event:halfOpen">halfOpen</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Emitted after options.resetTimeout has elapsed, allowing for
+a single attempt to call the service again. If that attempt is
+successful, the circuit will be closed. Otherwise it remains open.
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="event:open">open</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Emitted when the breaker action fails more than options.maxFailures
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="event:reject">reject</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Emitted when the breaker is open and failing fast
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="event:success">success</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Emitted when the breaker action succeeds
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="event:timeout">timeout</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Emitted when the breaker action takes longer than options.timeout
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        </dl>
     
 </article>
 
@@ -999,7 +1786,7 @@ that has been provided.
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on 2016-12-14T15:55:37-05:00
+		on 2016-12-21T15:32:17-05:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
