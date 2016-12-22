@@ -175,9 +175,9 @@ as a compressed file, or exploded in the <code>dist</code> folder.</p>
 <p>Here is an example using <a href="hapijs.com">hapi.js</a>. See the
 <a href="https://github.com/bucharest-gold/opossum/tree/master/examples/">examples</a>
 folder for more detail.</p>
-<p>```js index.js
+<pre class="prettyprint source lang-js"><code>// server.js
 const server = new Hapi.Server();
-server.register(require('inert', (err) =&gt; possibleError(err)));
+server.register(require('inert', (err) => possibleError(err)));
 server.route({
   method: 'GET',
   path: '/opossum.js',
@@ -186,10 +186,7 @@ server.route({
       path: path.join(__dirname, 'node_modules', 'opossum', 'dist', 'opossum-min.js'),
     }
   }
-});</p>
-<pre class="prettyprint source"><code>
-```html index.html
-&lt;html>
+});</code></pre><pre class="prettyprint source lang-html"><code>&lt;html>
 &lt;head>
   &lt;title>My Super App&lt;/title>
   &lt;script type='text/javascript' src=&quot;/jquery.js&quot;>&lt;/script>
@@ -199,39 +196,35 @@ server.route({
 ...
 &lt;/body>
 &lt;/head>
-&lt;/html></code></pre><p>```js app.js
+&lt;/html></code></pre><pre class="prettyprint source lang-js"><code>// app.js
 const route = 'https://example-service.com/rest/route';
 const circuitBreakerOptions = {
   timeout: 500,
   maxFailures: 3,
   resetTimeout: 5000
-};</p>
-<p>const circuit = circuitBreaker(() =&gt; $.get(route), circuitBreakerOptions);
-circuit.fallback(() =&gt; <code>${route} unavailable right now. Try later.</code>));
-circuit.on('success', (result) =&gt; $(element).append(JSON.stringify(result)}));</p>
-<p>$(() =&gt; {
-  $('#serviceButton').click(() =&gt; circuit.fire().catch((e) =&gt; console.error(e)));
-});</p>
-<pre class="prettyprint source"><code>
-### Events
+};
 
-A `CircuitBreaker` will emit events for important things that occur.
-Here are the events you can listen for.
-
-* `fire` - emitted when the breaker is fired.
-* `reject` - emitted when the breaker is open (or halfOpen).
-* `timeout` - emitted when the breaker action times out.
-* `success` - emitted when the breaker action completes successfully
-* `failure` - emitted when the breaker action fails, called with the error
-* `open` - emitted when the breaker state changes to `open`
-* `close` - emitted when the breaker state changes to `closed`
-* `halfOpen` - emitted when the breaker state changes to `halfOpen`
-* `fallback` - emitted when the breaker has a fallback function and executes it
-
-Handling events gives a greater level of control over your application behavior.
-
-```js
 const circuit = circuitBreaker(() => $.get(route), circuitBreakerOptions);
+circuit.fallback(() => `${route} unavailable right now. Try later.`));
+circuit.on('success', (result) => $(element).append(JSON.stringify(result)}));
+
+$(() => {
+  $('#serviceButton').click(() => circuit.fire().catch((e) => console.error(e)));
+});</code></pre><h3>Events</h3><p>A <code>CircuitBreaker</code> will emit events for important things that occur.
+Here are the events you can listen for.</p>
+<ul>
+<li><code>fire</code> - emitted when the breaker is fired.</li>
+<li><code>reject</code> - emitted when the breaker is open (or halfOpen).</li>
+<li><code>timeout</code> - emitted when the breaker action times out.</li>
+<li><code>success</code> - emitted when the breaker action completes successfully</li>
+<li><code>failure</code> - emitted when the breaker action fails, called with the error</li>
+<li><code>open</code> - emitted when the breaker state changes to <code>open</code></li>
+<li><code>close</code> - emitted when the breaker state changes to <code>closed</code></li>
+<li><code>halfOpen</code> - emitted when the breaker state changes to <code>halfOpen</code></li>
+<li><code>fallback</code> - emitted when the breaker has a fallback function and executes it</li>
+</ul>
+<p>Handling events gives a greater level of control over your application behavior.</p>
+<pre class="prettyprint source lang-js"><code>const circuit = circuitBreaker(() => $.get(route), circuitBreakerOptions);
 
 circuit.fallback(() => ({ body: `${route} unavailable right now. Try later.` }));
 
@@ -287,15 +280,7 @@ them. If you would like to control what <code>Promise</code> implementation used
 <code>opossum</code>, provide a <code>Promise</code> constructor function in your options when
 you create the breaker. E.g.</p>
 <pre class="prettyprint source lang-javascript"><code>// Force to use native JS promises
-const breaker = circuitBreaker(readFile, { Promise: Promise });</code></pre><h3>Development</h3><p>Contributions to Opossum are welcome! When contributing, be sure that you've added a test for any code changes you've made, and that <code>make test</code> passes.</p>
-<h3>Releasing</h3><ul>
-<li>Make sure everything works: <code>make clean &amp;&amp; npm install &amp;&amp; make ci</code></li>
-<li>Run standard-version: <code>npm run release</code></li>
-<li>Push to GitHub: <code>git push --follow-tags origin master</code></li>
-<li>Publish to npmjs.com: <code>npm publish</code></li>
-<li>Assuming all goes well, head over to https://github.com/bucharest-gold/opossum/releases and update the release with any relevant notes. The generated CHANGELOG.md file should be updated, so you can use it to document release changes.</li>
-<li>Tweet, blog and otherwise promote your awesome success!</li>
-</ul></article>
+const breaker = circuitBreaker(readFile, { Promise: Promise });</code></pre></article>
     </section>
 
 
@@ -341,7 +326,7 @@ const breaker = circuitBreaker(readFile, { Promise: Promise });</code></pre><h3>
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on 2016-12-21T16:15:26-05:00
+		on 2016-12-22T14:11:06-05:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
