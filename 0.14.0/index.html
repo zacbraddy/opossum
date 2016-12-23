@@ -109,7 +109,7 @@ and monitors their execution status. When things start failing, <code>opossum</c
 plays dead and fails fast. If you want, you can provide a fallback function
 to be executed when in the failure state.</p>
 <p>For more about the circuit breaker pattern, there are lots of resources
-on the web - search it! Here is one place to
+on the web - search it! Fowler's blog post is one place to
 <a href="http://martinfowler.com/bliki/CircuitBreaker.html">start reading</a>.</p>
 <table>
 <thead>
@@ -137,12 +137,12 @@ on the web - search it! Here is one place to
 </tr>
 <tr>
 <td>Engines:</td>
-<td>Node.js 4.x, 5.x, 6.x</td>
+<td>Node.js 4.x, 5.x, 6.x, 7.x</td>
 </tr>
 </tbody>
 </table>
 <h2>Usage</h2><p>Let's say you've got an API that depends on something that might fail -
-a network operation, or disk read, for example. Wrap that puppy up in a
+a network operation, or disk read, for example. Wrap those functions up in a
 <code>CircuitBreaker</code> and you have control over your destiny.</p>
 <pre class="prettyprint source lang-javascript"><code>const circuitBreaker = require('opossum');
 
@@ -159,22 +159,40 @@ const options = {
 };
 const breaker = circuitBreaker(asyncFunctionThatCouldFail, options);
 
-breaker.fire('foo', 'bar')
-  .then((result) => console.log(result))
-  .catch(console.error);</code></pre><p>You could also provide a fallback function that will be executed instead
-of indicating failure. After the <code>resetTimeout</code> expires, <code>opossum</code> will try
-the circuit again.</p>
+breaker.fire(params)
+  .then(console.log)
+  .catch(console.error);</code></pre><h3>Fallback</h3><p>You can also provide a fallback function that will be executed in the
+event of failure. To take some action when the fallback is performed,
+listen for the <code>fallback</code> event.</p>
 <pre class="prettyprint source lang-javascript"><code>const breaker = circuitBreaker(asyncFunctionThatCouldFail, options);
 // if asyncFunctionThatCouldFail starts to fail, firing the breaker
 // will trigger our fallback function
-breaker.fallback(() => 'Sorry, out of service right now');</code></pre><p>When a fallback function is triggered, it's considered a failure, and the
-fallback function will continue to be executed until the breaker is closed,
-after the <code>resetTimeout</code> has expired.</p>
-<h3>Browser</h3><p>Opossum really shines in a browser. You can use it to guard against network failures in your AJAX calls. A browserified version of module is available
+breaker.fallback(() => 'Sorry, out of service right now');
+breaker.on('fallback', (result) => reportFallbackEvent(result));</code></pre><p>Once the circuit has opened, a timeout is set based on <code>options.resetTimeout</code>.
+When the <code>resetTimeout</code> expires, <code>opossum</code> will enter the <code>halfOpen</code> state and
+try the action again. If successful, the circuit will close and emit the <code>close</code>
+event.</p>
+<p>When a fallback function is triggered, it's considered a failure, and the
+fallback function will continue to be executed until the breaker is closed.</p>
+<h3>Browser</h3><p>Opossum really shines in a browser. You can use it to guard against network
+failures in your AJAX calls. A browserified version of the module is available
 as a compressed file, or exploded in the <code>dist</code> folder.</p>
 <p>Here is an example using <a href="hapijs.com">hapi.js</a>. See the
 <a href="https://github.com/bucharest-gold/opossum/tree/master/examples/">examples</a>
 folder for more detail.</p>
+<p>Include <code>opossum.js</code> in your HTML file.</p>
+<pre class="prettyprint source lang-html"><code>&lt;html>
+&lt;head>
+  &lt;title>My Super App&lt;/title>
+  &lt;script type='text/javascript' src=&quot;/jquery.js&quot;>&lt;/script>
+  &lt;script type='text/javascript' src=&quot;/opossum.js&quot;>&lt;/script>
+  &lt;script type='text/javascript' src=&quot;/app.js&quot;>&lt;/script>
+&lt;body>
+...
+&lt;/body>
+&lt;/head>
+&lt;/html></code></pre><p>In your application, set a route to the file, pointing to
+<code>node_modules/opossum/dist/opossum-min.js</code>.</p>
 <pre class="prettyprint source lang-js"><code>// server.js
 const server = new Hapi.Server();
 server.register(require('inert', (err) => possibleError(err)));
@@ -186,17 +204,10 @@ server.route({
       path: path.join(__dirname, 'node_modules', 'opossum', 'dist', 'opossum-min.js'),
     }
   }
-});</code></pre><pre class="prettyprint source lang-html"><code>&lt;html>
-&lt;head>
-  &lt;title>My Super App&lt;/title>
-  &lt;script type='text/javascript' src=&quot;/jquery.js&quot;>&lt;/script>
-  &lt;script type='text/javascript' src=&quot;/opossum.js&quot;>&lt;/script>
-  &lt;script type='text/javascript' src=&quot;/app.js&quot;>&lt;/script>
-&lt;body>
-...
-&lt;/body>
-&lt;/head>
-&lt;/html></code></pre><pre class="prettyprint source lang-js"><code>// app.js
+});</code></pre><p>In the browser's global scope will be a <code>circuitBreaker</code> function. Use it
+to create circuit breakers, guarding against network failures in your REST
+API calls.</p>
+<pre class="prettyprint source lang-js"><code>// app.js
 const route = 'https://example-service.com/rest/route';
 const circuitBreakerOptions = {
   timeout: 500,
@@ -254,9 +265,11 @@ circuit.on('close',
 
 circuit.on('fallback',
   (data) => $(element).append(
-    makeNode(`FALLBACK: ${JSON.stringify(data)}`)));</code></pre><h3>Promises vs. Callbacks</h3><p>The <code>opossum</code> API uses a <code>Promise</code> as a return value for a breaker that
-has been fired. But your circuit action - the async function that might fail -
-doesn't have to return a promise. Check this out.</p>
+    makeNode(`FALLBACK: ${JSON.stringify(data)}`)));</code></pre><h3>Promises vs. Callbacks</h3><p>The <code>opossum</code> API returns a <code>Promise</code> from <code>CircuitBreaker.fire()</code>.
+But your circuit action - the async function that might fail -
+doesn't have to return a promise. You can easily turn Node.js style
+callback functions into something <code>opossum</code> understands by using
+<code>circuitBreaker.promisify()</code>.</p>
 <pre class="prettyprint source lang-javascript"><code>const fs = require('fs');
 const circuitBreaker = require('opossum');
 
@@ -265,21 +278,19 @@ const breaker = circuitBreaker(readFile, options);
 
 breaker.fire('./package.json', 'utf-8')
   .then(console.log)
-  .catch(console.error);</code></pre><p>Now, you've got easy monitoring of all those Node.js I/O bount functions.
-How do you deal with that? Easy, my friend - just <code>promisify</code> it.</p>
-<p>And just for fun, your circuit doesn't even really have to be a function.
+  .catch(console.error);</code></pre><p>And just for fun, your circuit doesn't even really have to be a function.
 Not sure when you'd use this - but you could if you wanted to.</p>
 <pre class="prettyprint source lang-javascript"><code>const breaker = circuitBreaker('foo', options);
 
 breaker.fire()
-  .then((result) => console.log(result)) // logs 'foo'
+  .then(console.log) // logs 'foo'
   .catch(console.error);</code></pre><h3>Promise Interoperability</h3><p>The <code>Promise</code> implementation used in <code>opossum</code> is compliant with both the
 ES6 <code>Promise</code> API as well as the <code>promises/A+</code> API. This means that it doesn't
 matter what flavor of promise your API uses, <code>opossum</code> should work fine with
-them. If you would like to control what <code>Promise</code> implementation used in
+it. If you would like to control what <code>Promise</code> implementation used in
 <code>opossum</code>, provide a <code>Promise</code> constructor function in your options when
 you create the breaker. E.g.</p>
-<pre class="prettyprint source lang-javascript"><code>// Force to use native JS promises
+<pre class="prettyprint source lang-javascript"><code>// Force opossum to use native JS promises
 const breaker = circuitBreaker(readFile, { Promise: Promise });</code></pre></article>
     </section>
 
@@ -326,7 +337,7 @@ const breaker = circuitBreaker(readFile, { Promise: Promise });</code></pre></ar
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on 2016-12-22T14:11:06-05:00
+		on 2016-12-23T01:12:28-05:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
