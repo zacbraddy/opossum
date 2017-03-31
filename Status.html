@@ -47,7 +47,7 @@
 			<li class="dropdown">
 				<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="CircuitBreaker.html#event:cacheHits">CircuitBreaker#event:cacheHits</a></li><li><a href="CircuitBreaker.html#event:close">CircuitBreaker#event:close</a></li><li><a href="CircuitBreaker.html#event:failure">CircuitBreaker#event:failure</a></li><li><a href="CircuitBreaker.html#event:fallback">CircuitBreaker#event:fallback</a></li><li><a href="CircuitBreaker.html#event:fire">CircuitBreaker#event:fire</a></li><li><a href="CircuitBreaker.html#event:halfOpen">CircuitBreaker#event:halfOpen</a></li><li><a href="CircuitBreaker.html#event:open">CircuitBreaker#event:open</a></li><li><a href="CircuitBreaker.html#event:reject">CircuitBreaker#event:reject</a></li><li><a href="CircuitBreaker.html#event:success">CircuitBreaker#event:success</a></li><li><a href="CircuitBreaker.html#event:timeout">CircuitBreaker#event:timeout</a></li>
+					<li><a href="CircuitBreaker.html#event:cacheHit">CircuitBreaker#event:cacheHit</a></li><li><a href="CircuitBreaker.html#event:cacheMiss">CircuitBreaker#event:cacheMiss</a></li><li><a href="CircuitBreaker.html#event:close">CircuitBreaker#event:close</a></li><li><a href="CircuitBreaker.html#event:failure">CircuitBreaker#event:failure</a></li><li><a href="CircuitBreaker.html#event:fallback">CircuitBreaker#event:fallback</a></li><li><a href="CircuitBreaker.html#event:fire">CircuitBreaker#event:fire</a></li><li><a href="CircuitBreaker.html#event:halfOpen">CircuitBreaker#event:halfOpen</a></li><li><a href="CircuitBreaker.html#event:open">CircuitBreaker#event:open</a></li><li><a href="CircuitBreaker.html#event:reject">CircuitBreaker#event:reject</a></li><li><a href="CircuitBreaker.html#event:success">CircuitBreaker#event:success</a></li><li><a href="CircuitBreaker.html#event:timeout">CircuitBreaker#event:timeout</a></li><li><a href="Status.html#event:snapshot">Status#event:snapshot</a></li>
 				</ul>
 			</li>
 			
@@ -88,7 +88,24 @@
         Status
         </h2>
         
-            <div class="class-description">Tracks execution status for a given <a href="CircuitBreaker.html">CircuitBreaker</a></div>
+            <div class="class-description"><p>
+Tracks execution status for a given <a href="CircuitBreaker.html">CircuitBreaker</a>.
+A Status instance is created for every <a href="CircuitBreaker.html">CircuitBreaker</a>
+and does not typically need to be created by a user.
+</p>
+<p>
+A Status instance will listen for all events on the <a href="CircuitBreaker.html">CircuitBreaker</a>
+and track them in a rolling statistical window. The window duration is
+determined by the `rollingCountTimeout` option provided to the
+<a href="CircuitBreaker.html">CircuitBreaker</a>. The window consists of an array of Objects,
+each representing the counts for a <a href="CircuitBreaker.html">CircuitBreaker</a>'s events.
+</p>
+<p>
+The array's length is determined by the <a href="CircuitBreaker.html">CircuitBreaker</a>'s
+`rollingCountBuckets` option. The duration of each slice of the window
+is determined by dividing the `rollingCountTimeout` by
+`rollingCountBuckets`.
+</p></div>
         
     
 </header>
@@ -100,12 +117,16 @@
         
 <hr>
 <dt>
-    <h4 class="name" id="Status"><span class="type-signature"></span>new Status(circuit)</h4>
+    <h4 class="name" id="Status"><span class="type-signature"></span>new Status(options)</h4>
     
     
 </dt>
 <dd>
 
+    
+    <div class="description">
+        Constructs a status object for a given circuit breaker
+    </div>
     
 
     
@@ -139,16 +160,10 @@
 
         <tr>
             
-                <td class="name"><code>circuit</code></td>
+                <td class="name"><code>options</code></td>
             
 
             <td class="type">
-            
-                
-<span class="param-type"><a href="CircuitBreaker.html">CircuitBreaker</a></span>
-
-
-
             
             </td>
 
@@ -156,12 +171,122 @@
 
             
 
-            <td class="description last">the <a href="CircuitBreaker.html">CircuitBreaker</a> to track status for</td>
+            <td class="description last"></td>
         </tr>
 
     
     </tbody>
 </table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><a href="CircuitBreaker.html#status">CircuitBreaker#status</a></li>
+			</ul>
+	</dd>
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">// Creates a 1 second window consisting of ten time slices,
+// each 100ms long.
+const circuit = circuitBreaker(fs.readFile,
+ { rollingCountBuckets: 10, rollingCountTimeout: 1000});
+
+// get the cumulative statistics for the last second
+circuit.status.stats;
+
+// get the array of 10, 1 second time slices for the last second
+circuit.status.window;</pre>
+
+
+    
+</dd>
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        <dl>
+            
+<hr>
+<dt class="name" id="stats">
+    <h4 id="stats"><span class="type-signature"></span>stats<span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Get the cumulative stats for the current window
+    </div>
+    
 
     
 
@@ -206,6 +331,150 @@
 
 
     
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="window">
+    <h4 id="window"><span class="type-signature"></span>window<span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Gets the stats window as an array of time-sliced objects.
+    </div>
+    
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Events</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id="event:snapshot">snapshot</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Emitted at each timeslice. Listeners for this
+event will receive a cumulative snapshot of the current status window.
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><a href="Status.html#stats">Status#stats</a></li>
+			</ul>
+	</dd>
+	
+
+	
+</dl>
+
+
+    
 
     
 
@@ -220,25 +489,7 @@
     
 </dd>
 
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
+        </dl>
     
 </article>
 
@@ -284,7 +535,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on 2017-03-30T08:48:54-04:00
+		on 2017-03-31T08:47:16-04:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

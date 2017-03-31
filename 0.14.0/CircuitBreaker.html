@@ -47,7 +47,7 @@
 			<li class="dropdown">
 				<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="CircuitBreaker.html#event:cacheHits">CircuitBreaker#event:cacheHits</a></li><li><a href="CircuitBreaker.html#event:close">CircuitBreaker#event:close</a></li><li><a href="CircuitBreaker.html#event:failure">CircuitBreaker#event:failure</a></li><li><a href="CircuitBreaker.html#event:fallback">CircuitBreaker#event:fallback</a></li><li><a href="CircuitBreaker.html#event:fire">CircuitBreaker#event:fire</a></li><li><a href="CircuitBreaker.html#event:halfOpen">CircuitBreaker#event:halfOpen</a></li><li><a href="CircuitBreaker.html#event:open">CircuitBreaker#event:open</a></li><li><a href="CircuitBreaker.html#event:reject">CircuitBreaker#event:reject</a></li><li><a href="CircuitBreaker.html#event:success">CircuitBreaker#event:success</a></li><li><a href="CircuitBreaker.html#event:timeout">CircuitBreaker#event:timeout</a></li>
+					<li><a href="CircuitBreaker.html#event:cacheHit">CircuitBreaker#event:cacheHit</a></li><li><a href="CircuitBreaker.html#event:cacheMiss">CircuitBreaker#event:cacheMiss</a></li><li><a href="CircuitBreaker.html#event:close">CircuitBreaker#event:close</a></li><li><a href="CircuitBreaker.html#event:failure">CircuitBreaker#event:failure</a></li><li><a href="CircuitBreaker.html#event:fallback">CircuitBreaker#event:fallback</a></li><li><a href="CircuitBreaker.html#event:fire">CircuitBreaker#event:fire</a></li><li><a href="CircuitBreaker.html#event:halfOpen">CircuitBreaker#event:halfOpen</a></li><li><a href="CircuitBreaker.html#event:open">CircuitBreaker#event:open</a></li><li><a href="CircuitBreaker.html#event:reject">CircuitBreaker#event:reject</a></li><li><a href="CircuitBreaker.html#event:success">CircuitBreaker#event:success</a></li><li><a href="CircuitBreaker.html#event:timeout">CircuitBreaker#event:timeout</a></li><li><a href="Status.html#event:snapshot">Status#event:snapshot</a></li>
 				</ul>
 			</li>
 			
@@ -104,6 +104,10 @@
 </dt>
 <dd>
 
+    
+    <div class="description">
+        Constructs a <a href="CircuitBreaker.html">CircuitBreaker</a>.
+    </div>
     
 
     
@@ -286,6 +290,45 @@ the breaker to `halfOpen` state, and trying the action again.</td>
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>rollingCountBuckets</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">sets the number of buckets the rolling
+ statistical window is divided into. So, if options.rollingCountTimeout is
+ 10000, and options.rollingCountBuckets is 10, then the statistical window
+ will be 1000 1 second snapshots in the statistical window. Default: 10</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the name to use for this circuit when reporting stats</td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -340,11 +383,6 @@ the breaker to `halfOpen` state, and trying the action again.</td>
 
     
 
-    
-    <h5>Fires:</h5>
-    <ul>
-        <li><a href="CircuitBreaker.html#event:halfOpen">CircuitBreaker#event:halfOpen</a></li>
-    </ul>
     
 
     
@@ -508,6 +546,66 @@ the breaker to `halfOpen` state, and trying the action again.</td>
         
             
 <hr>
+<dt class="name" id="name">
+    <h4 id="name"><span class="type-signature"></span>name<span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Gets the name of this circuit
+    </div>
+    
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
 <dt class="name" id="opened">
     <h4 id="opened"><span class="type-signature"></span>opened<span class="type-signature"></span></h4>
 
@@ -556,6 +654,73 @@ the breaker to `halfOpen` state, and trying the action again.</td>
 
 	
 
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="stats">
+    <h4 id="stats"><span class="type-signature"></span>stats<span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        A convenience function that returns the current stats for the circuit.
+    </div>
+    
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><a href="Status.html#stats">Status#stats</a></li>
+			</ul>
+	</dd>
 	
 
 	
@@ -1059,8 +1224,8 @@ on failure of the action.
     
     <div class="description">
         Opens the breaker. Each time the breaker is fired while the circuit is
-opened, a failed Promise is returned, and any fallback function
-that has been provided is invoked.
+opened, a failed Promise is returned, or if any fallback function
+has been provided, it is invoked.
     </div>
     
 
@@ -1143,7 +1308,7 @@ that has been provided is invoked.
             
 <hr>
 <dt>
-    <h4 class="name" id="event:cacheHits">cacheHits</h4>
+    <h4 class="name" id="event:cacheHit">cacheHit</h4>
     
     
 </dt>
@@ -1151,8 +1316,8 @@ that has been provided is invoked.
 
     
     <div class="description">
-        Emitted when the circuit breaker is not using the cache but
-the cache option is enabled.
+        Emitted when the circuit breaker is using the cache
+and finds a value.
     </div>
     
 
@@ -1222,7 +1387,7 @@ the cache option is enabled.
             
 <hr>
 <dt>
-    <h4 class="name" id="event:cacheHits">cacheHits</h4>
+    <h4 class="name" id="event:cacheMiss">cacheMiss</h4>
     
     
 </dt>
@@ -1230,7 +1395,8 @@ the cache option is enabled.
 
     
     <div class="description">
-        Emitted when the circuit breaker is using the cache
+        Emitted when the circuit breaker does not find a value in
+the cache, but the cache option is enabled.
     </div>
     
 
@@ -2048,7 +2214,7 @@ failed more than `options.maxFailures` number of times.
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on 2017-03-30T08:48:54-04:00
+		on 2017-03-31T08:47:16-04:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
