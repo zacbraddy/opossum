@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Classes</title>
+	<title>Documentation Class: HystrixStats</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -79,14 +79,24 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Classes</h1>
+	<h1 class="page-title">Class: HystrixStats</h1>
 <section>
 
 <header>
     
         <h2>
-        
+        HystrixStats
         </h2>
+        
+            <div class="class-description"><p>
+Stream Hystrix Metrics for a given <a href="CircuitBreaker.html">CircuitBreaker</a>.
+A HystrixStats instance is created for every <a href="CircuitBreaker.html">CircuitBreaker</a>
+and does not typically need to be created by a user.
+</p>
+<p>
+A HystrixStats instance will listen for all events on the CircuitBreaker.status.snapshot
+and format the data to the proper Hystrix format.  Making it easy to construct an Event Stream for a client
+</p></div>
         
     
 </header>
@@ -96,961 +106,14 @@
     <div class="container-overview">
     
         
-
-        
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Classes</h3>
-
-        <dl>
-            <dt><a href="CircuitBreaker.html">CircuitBreaker</a></dt>
-            <dd></dd>
-        
-            <dt><a href="HystrixStats.html">HystrixStats</a></dt>
-            <dd></dd>
-        
-            <dt><a href="Status.html">Status</a></dt>
-            <dd></dd>
-        </dl>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Events</h3>
-
-        <dl>
-            
 <hr>
 <dt>
-    <h4 class="name" id="event:cacheHit">cacheHit</h4>
+    <h4 class="name" id="HystrixStats"><span class="type-signature"></span>new HystrixStats()</h4>
     
     
 </dt>
 <dd>
 
-    
-    <div class="description">
-        Emitted when the circuit breaker is using the cache
-and finds a value.
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="event:cacheMiss">cacheMiss</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Emitted when the circuit breaker does not find a value in
-the cache, but the cache option is enabled.
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="event:close">close</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Emitted when the breaker is reset allowing the action to execute again
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="event:failure">failure</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Emitted when the circuit breaker action fails
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="event:fallback">fallback</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Emitted when the circuit breaker executes a fallback function
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="event:fire">fire</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Emitted when the circuit breaker action is executed
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="event:halfOpen">halfOpen</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Emitted after `options.resetTimeout` has elapsed, allowing for
-a single attempt to call the service again. If that attempt is
-successful, the circuit will be closed. Otherwise it remains open.
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="event:open">open</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Emitted when the breaker opens because the action has
-failed more than `options.maxFailures` number of times.
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="event:reject">reject</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Emitted when the circuit breaker is open and failing fast
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="event:success">success</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Emitted when the circuit breaker action succeeds
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="event:timeout">timeout</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Emitted when the circuit breaker action takes longer than `options.timeout`
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="event:snapshot">snapshot</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Emitted at each timeslice. Listeners for this
-event will receive a cumulative snapshot of the current status window.
-    </div>
     
 
     
@@ -1098,9 +161,113 @@ event will receive a cumulative snapshot of the current status window.
 	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
 	<dd class="tag-see">
 		<ul>
-			<li><a href="Status.html#stats">Status#stats</a></li>
+			<li><a href="CircuitBreaker.html#hystrixStats">CircuitBreaker#hystrixStats</a></li>
 			</ul>
 	</dd>
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">const circuit = circuitBreaker(fs.readFile, {});
+
+circuit.hystrixStats.getHystrixStream().pipe(response);</pre>
+
+
+    
+</dd>
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id="getHystrixStream"><span class="type-signature"></span>getHystrixStream()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        A convenience function that returns the hystrxStream
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
 	
 
 	
@@ -1123,6 +290,10 @@ event will receive a cumulative snapshot of the current status window.
 </dd>
 
         </dl>
+    
+
+    
+
     
 </article>
 
