@@ -638,6 +638,20 @@ test('options.maxFailures should be deprecated', (t) => {
   cb(passFail, options);
 });
 
+test('circuit tracks forced open/close states', (t) => {
+  const options = { errorThresholdPercentage: 1 };
+  const circuit = cb(passFail, options);
+  t.notOk(circuit.forceOpen, 'circuit forceOpen starts falsy');
+  t.notOk(circuit.forceClose, 'circuit forceClose starts falsy');
+  circuit.open();
+  t.ok(circuit.forceOpen, 'circuit forceOpen is truthy after open()');
+  t.notOk(circuit.forceClose, 'circuit forceClose is falsy after open()');
+  circuit.close();
+  t.notOk(circuit.forceOpen, 'circuit forceOpen is falsy after close()');
+  t.ok(circuit.forceClose, 'circuit forceClose is truthy after close()');
+  t.end();
+});
+
 /**
  * Returns a promise that resolves if the parameter
  * 'x' evaluates to >= 0. Otherwise the returned promise fails.
