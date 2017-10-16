@@ -47,7 +47,7 @@
 			<li class="dropdown">
 				<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="CircuitBreaker.html#event:cacheHit">CircuitBreaker#event:cacheHit</a></li><li><a href="CircuitBreaker.html#event:cacheMiss">CircuitBreaker#event:cacheMiss</a></li><li><a href="CircuitBreaker.html#event:close">CircuitBreaker#event:close</a></li><li><a href="CircuitBreaker.html#event:failure">CircuitBreaker#event:failure</a></li><li><a href="CircuitBreaker.html#event:fallback">CircuitBreaker#event:fallback</a></li><li><a href="CircuitBreaker.html#event:fire">CircuitBreaker#event:fire</a></li><li><a href="CircuitBreaker.html#event:halfOpen">CircuitBreaker#event:halfOpen</a></li><li><a href="CircuitBreaker.html#event:open">CircuitBreaker#event:open</a></li><li><a href="CircuitBreaker.html#event:reject">CircuitBreaker#event:reject</a></li><li><a href="CircuitBreaker.html#event:success">CircuitBreaker#event:success</a></li><li><a href="CircuitBreaker.html#event:timeout">CircuitBreaker#event:timeout</a></li><li><a href="Status.html#event:snapshot">Status#event:snapshot</a></li>
+					<li><a href="CircuitBreaker.html#event:cacheHit">CircuitBreaker#event:cacheHit</a></li><li><a href="CircuitBreaker.html#event:cacheMiss">CircuitBreaker#event:cacheMiss</a></li><li><a href="CircuitBreaker.html#event:close">CircuitBreaker#event:close</a></li><li><a href="CircuitBreaker.html#event:failure">CircuitBreaker#event:failure</a></li><li><a href="CircuitBreaker.html#event:fallback">CircuitBreaker#event:fallback</a></li><li><a href="CircuitBreaker.html#event:fire">CircuitBreaker#event:fire</a></li><li><a href="CircuitBreaker.html#event:halfOpen">CircuitBreaker#event:halfOpen</a></li><li><a href="CircuitBreaker.html#event:health-check-failed">CircuitBreaker#event:health-check-failed</a></li><li><a href="CircuitBreaker.html#event:open">CircuitBreaker#event:open</a></li><li><a href="CircuitBreaker.html#event:reject">CircuitBreaker#event:reject</a></li><li><a href="CircuitBreaker.html#event:semaphore-locked">CircuitBreaker#event:semaphore-locked</a></li><li><a href="CircuitBreaker.html#event:success">CircuitBreaker#event:success</a></li><li><a href="CircuitBreaker.html#event:timeout">CircuitBreaker#event:timeout</a></li><li><a href="Status.html#event:snapshot">Status#event:snapshot</a></li>
 				</ul>
 			</li>
 			
@@ -216,7 +216,7 @@ must supply values for each of these.
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">Number</span>
 
 
 
@@ -240,6 +240,12 @@ be allowed to execute before timing out.</td>
 
             <td class="type">
             
+                
+<span class="param-type">Number</span>
+
+
+
+            
             </td>
 
             
@@ -247,7 +253,7 @@ be allowed to execute before timing out.</td>
             
 
             <td class="description last">The number of times the circuit can fail before
-opening.</td>
+opening. (deprecated - see {CircuitBreaker#options.errorThresholdPercentage})</td>
         </tr>
 
     
@@ -258,6 +264,12 @@ opening.</td>
             
 
             <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
             
             </td>
 
@@ -278,6 +290,12 @@ the breaker to `halfOpen` state, and trying the action again.</td>
 
             <td class="type">
             
+                
+<span class="param-type">Number</span>
+
+
+
+            
             </td>
 
             
@@ -297,6 +315,12 @@ the breaker to `halfOpen` state, and trying the action again.</td>
             
 
             <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
             
             </td>
 
@@ -319,6 +343,12 @@ the breaker to `halfOpen` state, and trying the action again.</td>
 
             <td class="type">
             
+                
+<span class="param-type">String</span>
+
+
+
+            
             </td>
 
             
@@ -338,7 +368,7 @@ the breaker to `halfOpen` state, and trying the action again.</td>
             <td class="type">
             
                 
-<span class="param-type">boolean</span>
+<span class="param-type">Boolean</span>
 
 
 
@@ -363,6 +393,12 @@ the breaker to `halfOpen` state, and trying the action again.</td>
 
             <td class="type">
             
+                
+<span class="param-type">Number</span>
+
+
+
+            
             </td>
 
             
@@ -372,6 +408,31 @@ the breaker to `halfOpen` state, and trying the action again.</td>
             <td class="description last">the number of concurrent requests allowed. If the number of
 currently executing function calls is equal to options.capacity, further calls to `fire()`
 are rejected until at least one of the current requests completes.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>errorThresholdPercentage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the error percentage at which to open
+the circuit and start short-circuiting requests to fallback logic.</td>
         </tr>
 
     
@@ -1291,6 +1352,8 @@ provided, it will be invoked in the event of any failure or timeout.
         <li><a href="CircuitBreaker.html#event:success">CircuitBreaker#event:success</a></li>
     
         <li><a href="CircuitBreaker.html#event:timeout">CircuitBreaker#event:timeout</a></li>
+    
+        <li><a href="CircuitBreaker.html#event:semaphore-locked">CircuitBreaker#event:semaphore-locked</a></li>
     </ul>
     
 
@@ -1305,11 +1368,228 @@ provided, it will be invoked in the event of any failure or timeout.
     
             
 <div class="param-desc">
-    Promise a Promise that resolves on success and is rejected
+    a Promise which resolves on success and is rejected
 on failure of the action.
 </div>
 
 
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="healthCheck"><span class="type-signature"></span>healthCheck(func [, interval])</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Provide a health check function to be called periodically. The function should
+return a Promise. If the promise is rejected, the circuit will open. This is
+in addition to the existing circuit behavior as defined by `options.errorThresholdPercentage`
+in the constructor. For example, if the health check function provided here
+always returns a resolved promise, the circuit can still trip and open if
+there are failures exceeding the configured threshold. The health check function
+is excecuted within the circuit breaker's execution context, so `this` within
+the function is the circuit breaker itself.
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Argument</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>func</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">a health check function which returns a promise.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>interval</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">the amount of time between calls to the health
+check function. Default: 5000 (5 seconds)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+    <h5>Fires:</h5>
+    <ul>
+        <li><a href="CircuitBreaker.html#event:health-check-failed">CircuitBreaker#event:health-check-failed</a></li>
+    </ul>
+    
+
+    
+
+    
+
+    
+    <h5>Throws:</h5>
+    
+            
+
+    <div class="param-desc">
+    
+        TypeError if `interval` is supplied but not a number
+    
+    </div>
+
+
+        
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+
+    </dd>
+</dl>
 
 
         
@@ -1964,6 +2244,85 @@ successful, the circuit will be closed. Otherwise it remains open.
             
 <hr>
 <dt>
+    <h4 class="name" id="event:health-check-failed">health-check-failed</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Emitted with the user-supplied health check function
+returns a rejected promise.
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
     <h4 class="name" id="event:open">open</h4>
     
     
@@ -2052,6 +2411,85 @@ failed more than `options.maxFailures` number of times.
     
     <div class="description">
         Emitted when the circuit breaker is open and failing fast
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="event:semaphore-locked">semaphore-locked</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Emitted when the rate limit has been reached and there
+are no more locks to be obtained.
     </div>
     
 
@@ -2317,9 +2755,9 @@ failed more than `options.maxFailures` number of times.
 
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
 	
-		on 2017-06-20T18:19:28-04:00
+		on 2017-10-16T12:02:22-04:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
