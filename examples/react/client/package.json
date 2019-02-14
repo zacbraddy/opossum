@@ -10,7 +10,7 @@
     "jquery": "~3.3.1",
     "literalify": "^0.4.0",
     "opossum": "^1.9.0",
-    "react": "^16.7.0",
+    "react": "^16.8.2",
     "react-dom": "^16.7.0",
     "react-scripts": "^2.1.3"
   },
